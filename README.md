@@ -13,4 +13,4 @@ Build steps:
 
 Everything has been kept nice and simple, to be able to focus attention on just working with arrays and array best practices. Information that has been overly simplified: accounts, numbers, transactions, etc.
 
-At the same time I wanted the UI to be visually pleasing, meaning an app that I wouldn't mind using myself.
+At the same time I wanted the UI to be visually pleasing, meaning in the style of an app that I wouldn't mind using myself.
