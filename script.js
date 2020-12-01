@@ -276,3 +276,33 @@ GOOD LUCK 😀
 // // map method that calls this function for each of the movements array elements
 // // same params as forEach; element, index and array
 // console.log(movementsDescriptions);
+
+// const deposits = movements.filter(function (mov) {
+//   return mov > 0;
+// });
+// console.log(movements);
+// console.log(deposits);
+// // instead of using the for of loop below, it's useful to be able to chain methods together to build a final result - impossible using the for loop
+
+// const depositsFor = [];
+// for (const mov of movements) if (mov > 0) depositsFor.push(mov);
+// console.log(depositsFor);
+
+// const withdrawals = movements.filter(mov => mov < 0);
+// console.log(withdrawals);
+
+// accumulator -> SNOWBALL / total that keeps getting added to
+// console.log(movements);
+// const balance = movements.reduce(function (acc, cur, i, arr) {
+//   console.log(`Iteration ${i}: ${acc}`);
+//   return acc + cur;
+// }, 0);
+// reduce has a second parameter - the initial value of the accumulator in the first iteration - reprsented by 0 above as we want to start at 0
+// in each loop iteration, we return the updated accumulator plus the new current value - we can then keep adding to the acc with the next iteration
+const balance = movements.reduce((acc, cur) => acc + cur, 0);
+console.log(balance);
+// boiled down to one number at the end
+
+let balance2 = 0;
+for (const mov of movements) balance2 += mov;
+console.log(balance2);
