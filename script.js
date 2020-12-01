@@ -84,11 +84,24 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
+// each function that we work with should receive the data instead of using a global variable so it can work with that data or any other data we choose to pass in
+const createUsernames = function (accs) {
+  accs.forEach(function (acc) {
+    acc.username = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+}; // don't return anything, we just want the side effect of mutating the accounts array and adding the new username property
+createUsernames(accounts);
+console.log(accounts);
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
 
-// const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
 
@@ -243,3 +256,23 @@ GOOD LUCK 😀
 //   });
 // };
 // checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
+
+// const eurToUsd = 1.1;
+
+// const movementsUSD = movements.map(mov => mov * eurToUsd);
+// console.log(movements); // original array not mutated
+// console.log(movementsUSD); // ne figures returned into a new array
+
+// const movementsUSDfor = [];
+// for (const mov of movements) movementsUSDfor.push(mov * eurToUsd);
+// console.log(movementsUSDfor); // does the same as the map method above
+
+// const movementsDescriptions = movements.map(
+//   (mov, i) =>
+//     `Movement ${i + 1}: You ${mov > 0 ? 'withdrew' : 'deposited'} ${Math.abs(
+//       mov
+//     )}`
+// );
+// // map method that calls this function for each of the movements array elements
+// // same params as forEach; element, index and array
+// console.log(movementsDescriptions);
