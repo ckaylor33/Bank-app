@@ -84,6 +84,12 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov, i) => acc + mov, 0);
+  labelBalance.textContent = `€${balance}`;
+};
+calcDisplayBalance(account1.movements);
+
 // each function that we work with should receive the data instead of using a global variable so it can work with that data or any other data we choose to pass in
 const createUsernames = function (accs) {
   accs.forEach(function (acc) {
@@ -95,7 +101,6 @@ const createUsernames = function (accs) {
   });
 }; // don't return anything, we just want the side effect of mutating the accounts array and adding the new username property
 createUsernames(accounts);
-console.log(accounts);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -107,7 +112,7 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 // ARRAY METHODS //
 
-// SLICE
+// SLICE ////////////////////
 // let arr = [`a`, `b`, `c`, `d`, `e`];
 // console.log(arr.slice(2)); // does not mutate original arr array - simply creates a copy of arr with the extracted parts
 // console.log(arr.slice(2, 4)); // first parameter is where the first index is, the second is where the last index will be - end parameter not included in the output
@@ -116,7 +121,7 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // console.log(arr.slice()); // creates a shallow copy of the entire array, can do the same thing with the spread operator;
 // console.log([...arr]); // same result as above
 
-// // SPLICE
+// // SPLICE //////////////////
 // // Does change the original array unlike slice
 // // console.log(arr.splice(2));
 // arr.splice(-1); // removes last element
@@ -126,24 +131,24 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // // most of the time the value the splice method returns doesn't interest us - all we are usually interested in is to delete one or more elements from the array using splice - one common use case is to remove the last element from the array
 // // second parameter is delete count, how many elements you wish to delete
 
-// // REVERSE
+// // REVERSE //////////////////
 // arr = [`a`, `b`, `c`, `d`, `e`];
 // let arr2 = [`j`, `i`, `h`, `g`, `f`];
 // console.log(arr2.reverse()); // reverse mutates the original array
 // console.log(arr2);
 
-// // CONCAT
+// // CONCAT /////////////////
 // const letters = arr.concat(arr2);
 // console.log(letters);
 // // brings together two arrays
 // console.log([...arr, ...arr2]);
 // // could also do this - same result and both do not mutate
 
-// // JOIN
+// // JOIN /////////////////
 // console.log(letters.join(' - '));
 // string with letters specified
 
-//forEACH
+//forEACH //////////////////////////
 
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
@@ -180,7 +185,7 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // continue and break statements don't work at all in forEach
 // will always loop over the entire array
 
-// MAP
+// MAP ////////////////////////////
 // const currencies = new Map([
 //   ['USD', 'United States dollar'],
 //   ['EUR', 'Euro'],
@@ -191,7 +196,7 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 //   console.log(`${key}: ${value}`);
 // });
 
-// // SET
+// // SET //////////////////////
 // const currenciesUnique = new Set([`USD`, `GBP`, `USD`, `EUR`]);
 // console.log(currenciesUnique);
 // currenciesUnique.forEach(function (value, _, set) {
@@ -199,7 +204,7 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // });
 // second paramater for forEach is the same as the first - as sets don't have keys
 
-// Coding Challenge #1
+// Coding Challenge #1 ////////////////////////////
 
 /* 
 Julia and Kate are doing a study on dogs. So each of them asked 5 dog owners about their dog's age, and stored the data into an array (one array for each). For now, they are just interested in knowing whether a dog is an adult or a puppy. A dog is an adult if it is at least 3 years old, and it's a puppy if it's less than 3 years old.
@@ -219,7 +224,7 @@ TEST DATA 2: Julia's data [9, 16, 6, 8, 3], Kate's data [10, 5, 6, 1, 4]
 GOOD LUCK 😀
 */
 
-//SOLUTION 1
+//SOLUTION 1 //
 // const dogsJulia = [3, 5, 2, 12, 7];
 // const dogsKate = [4, 1, 15, 8, 3];
 
@@ -239,7 +244,7 @@ GOOD LUCK 😀
 // };
 // checkDogs();
 
-//SOLUTION 2
+//SOLUTION 2 //
 // const checkDogs = function (dogsJulia, dogsKate) {
 //   const dogsJuliaCorrected = dogsJulia.slice();
 //   dogsJuliaCorrected.splice(0, 1);
@@ -257,8 +262,8 @@ GOOD LUCK 😀
 // };
 // checkDogs([3, 5, 2, 12, 7], [4, 1, 15, 8, 3]);
 
+// MAP /////////////////////////////////
 // const eurToUsd = 1.1;
-
 // const movementsUSD = movements.map(mov => mov * eurToUsd);
 // console.log(movements); // original array not mutated
 // console.log(movementsUSD); // ne figures returned into a new array
@@ -277,6 +282,7 @@ GOOD LUCK 😀
 // // same params as forEach; element, index and array
 // console.log(movementsDescriptions);
 
+// FILTER ///////////////////////////////
 // const deposits = movements.filter(function (mov) {
 //   return mov > 0;
 // });
@@ -291,6 +297,7 @@ GOOD LUCK 😀
 // const withdrawals = movements.filter(mov => mov < 0);
 // console.log(withdrawals);
 
+// REDUCE /////////////////////////////////
 // accumulator -> SNOWBALL / total that keeps getting added to
 // console.log(movements);
 // const balance = movements.reduce(function (acc, cur, i, arr) {
@@ -299,10 +306,59 @@ GOOD LUCK 😀
 // }, 0);
 // reduce has a second parameter - the initial value of the accumulator in the first iteration - reprsented by 0 above as we want to start at 0
 // in each loop iteration, we return the updated accumulator plus the new current value - we can then keep adding to the acc with the next iteration
-const balance = movements.reduce((acc, cur) => acc + cur, 0);
-console.log(balance);
-// boiled down to one number at the end
+// const balance = movements.reduce((acc, cur) => acc + cur, 0);
+// console.log(balance);
+// // boiled down to one number at the end
 
-let balance2 = 0;
-for (const mov of movements) balance2 += mov;
-console.log(balance2);
+// let balance2 = 0;
+// for (const mov of movements) balance2 += mov;
+// console.log(balance2);
+
+// // Maximum value of an array
+// // When boiling down the array into a single value - it could be whatever we want it to be; mult, string, obj, etc.
+// // What do you want the accumulator to be and how should it interact with the current value?
+// const max = movements.reduce((acc, mov) => {
+//   if (acc > mov) return acc;
+//   else return mov;
+// }, movements[0]);
+// console.log(max);
+
+// Coding Challenge #2 ///////////////////////////
+
+/* 
+Let's go back to Julia and Kate's study about dogs. This time, they want to convert dog ages to human ages and calculate the average age of the dogs in their study.
+
+Create a function 'calcAverageHumanAge', which accepts an arrays of dog's ages ('ages'), and does the following things in order:
+
+1. Calculate the dog age in human years using the following formula: if the dog is <= 2 years old, humanAge = 2 * dogAge. If the dog is > 2 years old, humanAge = 16 + dogAge * 4.
+2. Exclude all dogs that are less than 18 human years old (which is the same as keeping dogs that are at least 18 years old)
+3. Calculate the average human age of all adult dogs (you should already know from other challenges how we calculate averages 😉)
+4. Run the function for both test datasets
+
+TEST DATA 1: [5, 2, 4, 1, 15, 8, 3]
+TEST DATA 2: [16, 6, 10, 5, 6, 1, 4]
+
+GOOD LUCK 😀
+*/
+
+// SOLUTION ///////////////////////////////////
+// const calcAverageHumanAge = function (ages) {
+//   //calc age
+//   const ageCalc = ages.map(dogAge =>
+//     dogAge <= 2 ? 2 * dogAge : 16 + dogAge * 4
+//   );
+//   console.log(ageCalc);
+//   // filter out dogs under 18
+//   const filterDogs = ageCalc.filter(humAge => humAge >= 18);
+//   console.log(filterDogs);
+//   // work out average age in human years
+//   const aveHumanLife =
+//     filterDogs.reduce((acc, humAge) => acc + humAge, 0) / filterDogs.length;
+//   console.log(aveHumanLife);
+//   return aveHumanLife;
+// };
+
+// const avg1 = calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
+// const avg2 = calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
+
+// console.log(avg1, avg2);
