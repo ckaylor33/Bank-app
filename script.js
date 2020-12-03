@@ -74,7 +74,7 @@ const displayMovements = function (movements) {
         <div class="movements__type movements__type--${type}">${
       i + 1
     } ${type}</div>
-        <div class="movements__value">${mov}</div>
+        <div class="movements__value">€${mov}</div>
       </div>`;
 
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -89,6 +89,30 @@ const calcDisplayBalance = function (movements) {
   labelBalance.textContent = `€${balance}`;
 };
 calcDisplayBalance(account1.movements);
+
+// calc displayed summary of deposits, withdrawals and interest on those deposits
+const calcDisplaySummary = function (movements) {
+  const incomes = movements
+    .filter(mov => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `€${incomes}`;
+
+  const out = movements
+    .filter(mov => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `€${Math.abs(out)}`;
+
+  const interest = movements
+    .filter(mov => mov > 0)
+    .map(deposit => (deposit * 1.2) / 100)
+    .filter((int, i, arr) => {
+      console.log(arr);
+      return int >= 1;
+    })
+    .reduce((acc, int) => acc + int, 0);
+  labelSumInterest.textContent = `€${interest}`;
+};
+calcDisplaySummary(account1.movements);
 
 // each function that we work with should receive the data instead of using a global variable so it can work with that data or any other data we choose to pass in
 const createUsernames = function (accs) {
@@ -362,3 +386,42 @@ GOOD LUCK 😀
 // const avg2 = calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
 
 // console.log(avg1, avg2);
+
+// // PIPELINE - CHAINING /////////////////////
+// const eurToUsd = 1.1;
+// const totalDepositsUSD = movements
+//   .filter(mov => mov > 0)
+//   .map(mov => mov * eurToUsd)
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(totalDepositsUSD);
+// // can chain these methods as long as they return a new array - can do this with filter and map, not reduce as it returns a value
+
+// Coding Challenge #3 //////////////////////////
+/* 
+Rewrite the 'calcAverageHumanAge' function from the previous challenge, but this time as an arrow function, and using chaining!
+
+TEST DATA 1: [5, 2, 4, 1, 15, 8, 3]
+TEST DATA 2: [16, 6, 10, 5, 6, 1, 4]
+
+GOOD LUCK 😀
+*/
+
+// const calcAverageHumanAge = function (ages) {
+//   const ageCalc = ages
+//     .map(dogAge => (dogAge <= 2 ? 2 * dogAge : 16 + dogAge * 4))
+//     .filter(humAge => humAge >= 18)
+//     .reduce((acc, humAge, i, arr) => acc + humAge / arr.length, 0);
+//   return ageCalc;
+// };
+// const avg1 = calcAverageHumanAge([5, 2, 4, 1, 15, 8, 3]);
+// const avg2 = calcAverageHumanAge([16, 6, 10, 5, 6, 1, 4]);
+
+// console.log(avg1, avg2);
+
+// FIND METHOD ///////////////////////////////
+// finds an element in an array
+// uses a allback function to return a boolean
+// returns the first element in the array that satisfies this condition
+const firstWithdrawal = movements.find(mov => mov < 0);
+console.log(movements);
+console.log(firstWithdrawal);
