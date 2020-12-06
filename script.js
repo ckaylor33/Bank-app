@@ -33,7 +33,14 @@ const account4 = {
   pin: 4444,
 };
 
-const accounts = [account1, account2, account3, account4];
+const account5 = {
+  owner: 'Jonas Schmedtmann',
+  movements: [530, 1200, 500, 90, 820, -1000, 330],
+  interestRate: 1.3,
+  pin: 5555,
+};
+
+const accounts = [account1, account2, account3, account4, account5];
 
 // Elements
 const labelWelcome = document.querySelector('.welcome');
@@ -82,29 +89,27 @@ const displayMovements = function (movements) {
     // second param - what I want to insert into the html
   });
 };
-displayMovements(account1.movements);
 
 const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((acc, mov, i) => acc + mov, 0);
   labelBalance.textContent = `€${balance}`;
 };
-calcDisplayBalance(account1.movements);
 
 // calc displayed summary of deposits, withdrawals and interest on those deposits
-const calcDisplaySummary = function (movements) {
-  const incomes = movements
+const calcDisplaySummary = function (acc) {
+  const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumIn.textContent = `€${incomes}`;
 
-  const out = movements
+  const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumOut.textContent = `€${Math.abs(out)}`;
 
-  const interest = movements
+  const interest = acc.movements
     .filter(mov => mov > 0)
-    .map(deposit => (deposit * 1.2) / 100)
+    .map(deposit => (deposit * acc.interestRate) / 100)
     .filter((int, i, arr) => {
       console.log(arr);
       return int >= 1;
@@ -112,7 +117,6 @@ const calcDisplaySummary = function (movements) {
     .reduce((acc, int) => acc + int, 0);
   labelSumInterest.textContent = `€${interest}`;
 };
-calcDisplaySummary(account1.movements);
 
 // each function that we work with should receive the data instead of using a global variable so it can work with that data or any other data we choose to pass in
 const createUsernames = function (accs) {
@@ -125,6 +129,38 @@ const createUsernames = function (accs) {
   });
 }; // don't return anything, we just want the side effect of mutating the accounts array and adding the new username property
 createUsernames(accounts);
+
+let currentAccount;
+// Event handler
+btnLogin.addEventListener('click', function (event) {
+  // prevent form from submitting
+  event.preventDefault();
+
+  currentAccount = accounts.find(
+    acc => acc.username === inputLoginUsername.value
+  );
+  console.log(currentAccount);
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // Display UI & welcome message
+    labelWelcome.textContent = `Welcome back, ${
+      currentAccount.owner.split(' ')[0]
+    }`;
+    containerApp.style.opacity = 100;
+
+    // Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur();
+
+    // Display movements
+    displayMovements(currentAccount.movements);
+    // Display balance
+    calcDisplayBalance(currentAccount.movements);
+    // Display Summary
+    calcDisplaySummary(currentAccount);
+    console.log('Login');
+  }
+});
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -420,8 +456,19 @@ GOOD LUCK 😀
 
 // FIND METHOD ///////////////////////////////
 // finds an element in an array
-// uses a allback function to return a boolean
+// uses a callback function to return a boolean
 // returns the first element in the array that satisfies this condition
-const firstWithdrawal = movements.find(mov => mov < 0);
-console.log(movements);
-console.log(firstWithdrawal);
+// const firstWithdrawal = movements.find(mov => mov < 0);
+// console.log(movements);
+// console.log(firstWithdrawal);
+
+// const account = accounts.find(acc => acc.owner === `Jessica Davis`);
+// console.log(account);
+
+// for (const acc of accounts) {
+//   if (acc.owner === `Jessica Davis`) {
+//     console.log(acc);
+//     break;
+//   }
+// }
+// same result as above find method above
