@@ -90,9 +90,10 @@ const displayMovements = function (movements) {
   });
 };
 
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov, i) => acc + mov, 0);
-  labelBalance.textContent = `€${balance}`;
+// BALANCE DISPLAY
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, mov, i) => acc + mov, 0);
+  labelBalance.textContent = `€${acc.balance}`;
 };
 
 // calc displayed summary of deposits, withdrawals and interest on those deposits
@@ -130,8 +131,18 @@ const createUsernames = function (accs) {
 }; // don't return anything, we just want the side effect of mutating the accounts array and adding the new username property
 createUsernames(accounts);
 
-let currentAccount;
+const updateUI = function (acc) {
+  // Display movements
+  displayMovements(acc.movements);
+  // Display balance
+  calcDisplayBalance(acc);
+  // Display Summary
+  calcDisplaySummary(acc);
+};
+
 // Event handler
+let currentAccount;
+
 btnLogin.addEventListener('click', function (event) {
   // prevent form from submitting
   event.preventDefault();
@@ -152,13 +163,35 @@ btnLogin.addEventListener('click', function (event) {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
-    // Display movements
-    displayMovements(currentAccount.movements);
-    // Display balance
-    calcDisplayBalance(currentAccount.movements);
-    // Display Summary
-    calcDisplaySummary(currentAccount);
-    console.log('Login');
+    // Update UI
+    updateUI(currentAccount);
+  }
+});
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  // use username to find account object to which we want to transfer
+  const receiverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+  inputTransferAmount.value = inputTransferTo.value = '';
+
+  // check if current user has enough money
+  // check if positive amount
+  // check if recipient account exists
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    currentAccount.balance >= amount &&
+    receiverAcc?.username !== currentAccount.username
+  ) {
+    // Doing the transfer
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+
+    // Update UI
+    updateUI(currentAccount);
   }
 });
 
