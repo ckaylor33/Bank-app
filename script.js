@@ -69,11 +69,13 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 // loop over movements array inside of account objects - add the dynamic HTML to the movements div
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   containerMovements.innerHTML = '';
   // clears all of the HTML inside movements div instead of; .textContent = 0
 
-  movements.forEach(function (mov, i) {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
 
     const html = `
@@ -195,6 +197,18 @@ btnTransfer.addEventListener('click', function (e) {
   }
 });
 
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
+    // Update movement
+    currentAccount.movements.push(amount);
+    // Update UI
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+});
+
 btnClose.addEventListener('click', function (e) {
   e.preventDefault();
   if (
@@ -213,6 +227,13 @@ btnClose.addEventListener('click', function (e) {
     containerApp.style.opacity = 0;
   }
   inputCloseUsername.value = inputClosePin.value = '';
+});
+
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
 });
 
 /////////////////////////////////////////////////
@@ -417,7 +438,7 @@ GOOD LUCK 😀
 //   console.log(`Iteration ${i}: ${acc}`);
 //   return acc + cur;
 // }, 0);
-// reduce has a second parameter - the initial value of the accumulator in the first iteration - reprsented by 0 above as we want to start at 0
+// reduce has a second parameter - the initial value of the accumulator in the first iteration - represented by 0 above as we want to start at 0
 // in each loop iteration, we return the updated accumulator plus the new current value - we can then keep adding to the acc with the next iteration
 // const balance = movements.reduce((acc, cur) => acc + cur, 0);
 // console.log(balance);
@@ -525,3 +546,75 @@ GOOD LUCK 😀
 //   }
 // }
 // same result as above find method above
+
+// SOME AND EVERY //////////////////////////////
+// Similar to includes method - tests for equality
+// EQUALITY
+// console.log(movements);
+// console.log(movements.includes(-130));
+
+// // SOME - CONDITION
+// console.log(movements.some(mov => mov === -130)); // same as above includes method
+// const anyDeposits = movements.some(mov => mov > 0);
+// console.log(anyDeposits);
+
+// // EVERY
+// // Only true if all elements in the array satisfy the condition
+// console.log(movements.every(mov => mov > 0)); // false
+// console.log(account4.movements.every(mov => mov > 0)); // true
+
+// // SEPARATE CALLBACK
+// const deposit = mov => mov > 0;
+// console.log(movements.some(deposit));
+// console.log(movements.every(deposit));
+// console.log(movements.filter(deposit));
+// // better for dry principle
+
+// FLAT AND FLATMAP //////////////////////////////////
+// FLAT - one level deep by default
+// const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
+// console.log(arr.flat());
+
+// const arrDeep = [[[[1, 2], 3], [4, [5, 6]], 7, 8]];
+// console.log(arrDeep.flat(3)); // param to specify how deep you want to go...
+
+// // FLAT
+// const overallBalance = accounts
+//   .map(acc => acc.movements)
+//   .flat()
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(overallBalance);
+
+// // FLATMAP
+// // only goes one level deep and cannot be changed
+// const overallBalance2 = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((acc, mov) => acc + mov, 0);
+// console.log(overallBalance2);
+
+// SORTING ARRAYS
+// STRINGS
+// const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
+// console.log(owners.sort()); // alphabetically
+// console.log(owners); // orignal array mutated
+// // NUMBERS
+// console.log(movements);
+// // console.log(movements.sort()); // sort converts everything to strings and then sorts by default
+
+// // ASCENDING ORDER SORT
+// // return < 0, A, B (keep order)
+// // return > 0, B, A (switch order)
+// // movements.sort((a, b) => {
+// //   if (a > b) return 1;
+// //   if (a < b) return -1;
+// // });
+// movements.sort((a, b) => a - b); // same as above
+// console.log(movements);
+
+// // DESCENDING ORDER SORT
+// // movements.sort((a, b) => {
+// //   if (a > b) return -1;
+// //   if (a < b) return 1;
+// // });
+// movements.sort((a, b) => b - a); // same as above
+// console.log(movements);
