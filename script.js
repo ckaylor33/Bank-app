@@ -618,3 +618,125 @@ GOOD LUCK 😀
 // // });
 // movements.sort((a, b) => b - a); // same as above
 // console.log(movements);
+
+// // WAYS OF CREATING AND FILLING ARRAYS
+// const arr = [1, 2, 3, 4, 5, 6, 7];
+// console.log(new Array(1, 2, 3, 4, 5, 6, 7));
+
+// // EMPTY ARRAYS + FILL METHOD
+// const x = new Array(7); // creates new array with 7 empty elements
+// console.log(x);
+// // console.log(x.map(() => 5)); // nothing happens
+// // console.log(x.fill(1)); // this does work, mutates array
+// x.fill(1, 3, 5); // first the value of the elements, second parameter determines where it starts to fill, third where it ends
+// console.log(x);
+
+// arr.fill(23, 4, 6); // also works for arrays already full
+// console.log(arr);
+
+// // Array.from function
+// const y = Array.from({ length: 7 }, () => 1);
+// console.log(y);
+
+// const z = Array.from({ length: 7 }, (_, i) => i + 1);
+// // function in above is like the callback function when calling map on emtpy array, you get the current element and the index
+// console.log(z);
+
+// // Random dice roll
+// const d = Array.from({ length: 100 }, () => Math.trunc(Math.random() * 6 + 1));
+// console.log(d);
+
+// labelBalance.addEventListener('click', function () {
+//   const movementsUI = Array.from(
+//     document.querySelectorAll('.movements__value'),
+//     el => Number(el.textContent.replace('€', ''))
+//   );
+//   console.log(movementsUI);
+// });
+
+// WHICH METHOD TO USE?
+
+// Mutate the array? //
+//  Add to original:
+// - .push (end)
+// - .unshift (start)
+// Remove from original:
+// - .pop (end)
+// - .shift (start)
+// - .splice (any)
+// Others:
+// - .reverse
+// - .sort
+// - .fill
+
+// New array? //
+// Computed from original:
+// - .map (loop)
+// Filtered using condition:
+// - .filter
+// Portion of original:
+// - .slice
+// Adding original to other:
+// - .concat
+// Flattening  original:
+// - .flat
+// - .flatMap
+
+// Array index?
+// Based on value:
+// - .indexOf
+// Based on test condition:
+// - .findIndex
+
+// Array element?
+// Based on test condition:
+// - .find
+
+// Know if array includes? - Good for if else statements //
+//  Based on value:
+// - .includes
+// Based on test condition:
+// - .some
+// - .every
+
+// Transform to value?
+// Based on accumulator:
+// - .reduce (boil down array to single value of any type: number, string, boolean, or new array or object)
+
+// To loop array?
+// Based on callback:
+// - .forEach (Does not create a new array, just loops)
+
+// New string?
+// Based on seperator string:
+// - .join
+
+// Coding Challenge #4
+
+/* 
+Julia and Kate are still studying dogs, and this time they are studying if dogs are eating too much or too little.
+Eating too much means the dog's current food portion is larger than the recommended portion, and eating too little is the opposite.
+Eating an okay amount means the dog's current food portion is within a range 10% above and 10% below the recommended portion (see hint).
+
+1. Loop over the array containing dog objects, and for each dog, calculate the recommended food portion and add it to the object as a new property. Do NOT create a new array, simply loop over the array. Forumla: recommendedFood = weight ** 0.75 * 28. (The result is in grams of food, and the weight needs to be in kg)
+2. Find Sarah's dog and log to the console whether it's eating too much or too little. HINT: Some dogs have multiple owners, so you first need to find Sarah in the owners array, and so this one is a bit tricky (on purpose) 🤓
+3. Create an array containing all owners of dogs who eat too much ('ownersEatTooMuch') and an array with all owners of dogs who eat too little ('ownersEatTooLittle').
+4. Log a string to the console for each array created in 3., like this: "Matilda and Alice and Bob's dogs eat too much!" and "Sarah and John and Michael's dogs eat too little!"
+5. Log to the console whether there is any dog eating EXACTLY the amount of food that is recommended (just true or false)
+6. Log to the console whether there is any dog eating an OKAY amount of food (just true or false)
+7. Create an array containing the dogs that are eating an OKAY amount of food (try to reuse the condition used in 6.)
+8. Create a shallow copy of the dogs array and sort it by recommended food portion in an ascending order (keep in mind that the portions are inside the array's objects)
+
+HINT 1: Use many different tools to solve these challenges, you can use the summary lecture to choose between them 😉
+HINT 2: Being within a range 10% above and below the recommended portion means: current > (recommended * 0.90) && current < (recommended * 1.10). Basically, the current portion should be between 90% and 110% of the recommended portion.
+
+TEST DATA:
+const dogs = [
+  { weight: 22, curFood: 250, owners: ['Alice', 'Bob'] },
+  { weight: 8, curFood: 200, owners: ['Matilda'] },
+  { weight: 13, curFood: 275, owners: ['Sarah', 'John'] },
+  { weight: 32, curFood: 340, owners: ['Michael'] }
+];
+
+GOOD LUCK 😀
+*/
